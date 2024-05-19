@@ -4,6 +4,8 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import ShopCategory from './Pages/ShopCategory';
 import Shop from './Pages/Shop';
 import LoginSignup from './Pages/LoginSignup';
+import Product from './Pages/Product';
+import Cart from './Pages/Cart';
 
 function App() {
   return (

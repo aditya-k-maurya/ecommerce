@@ -13,17 +13,21 @@
 
 .nav-logo p{
   color: #171717;
-  font-size: 38px;
+  font-size: 24px;
   font-weight: 600;
+}
+
+.nav-logo img{
+  transform: scale(70%);
 }
 
 .nav-menu{
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 50px;
+  gap: 25px;
   color: #626262;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -47,18 +51,18 @@
 .nav-login-cart{
   display: flex;
   align-items: center;
-  gap:45px;
+  gap:30px;
 
 }
 
 .nav-login-cart button{
-  width: 157px;
-  height: 58px;
+  width: 100px;
+  height: 40px;
   outline: none;
   border: 1px solid #7a7a7a;
-  border-radius: 75px;
+  border-radius: 40px;
   color: #515151;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 500;
   background-color: white;
   cursor: pointer;
@@ -69,16 +73,20 @@
 }
 
 .nav-cart-count{
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -35px;
-  margin-left: -55px;
+  margin-top: -32px;
+  margin-left: -45px;
   border-radius: 11px;
-  font-size: 14px;
+  font-size: 10px;
   background: red;
   color: white;
+  z-index: 1;
 }
 
+.nav-login-cart img{
+  transform: scale(70%);
+}
