@@ -17,14 +17,12 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 // storing assets like images
-app.use(express.static("public"));
+app.use('/images',express.static("public/images"));
 
-// to set data in browser securely
-// app.use(cookieParser());
+//routes import
+import userRouter from "./routes/product.routes.js";
 
-
-app.get('/', (req, res) => {
-  res.send("Express App is running")
-})
+//routes declaration
+app.use("/api/v1/product", userRouter);
 
 export { app };
