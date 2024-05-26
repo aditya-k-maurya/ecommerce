@@ -37,11 +37,35 @@ const addProduct = asyncHandler(async (req, res) => {
 	});
 
 	console.log(product);
-  await product.save();
-  console.log("New Product Saved")
+	await product.save();
+	console.log("New Product Saved");
 
-  res
-  .json(new ApiResponse(200, product, "New product Added"))
+	res.json(new ApiResponse(200, product, "New product Added"));
 });
 
-export { uploadProductImage, addProduct };
+const deleteProduct = asyncHandler(async (req, res) => {
+	const { id, name } = req.body;
+
+	await Product.findOneAndDelete({ id: id });
+
+	console.log("Product removed");
+	res.json(200, name, "Product has been removed");
+});
+
+const getAllProduct = asyncHandler(async (req, res) => {
+	let products = await Product.find({});
+
+	if (!products) {
+		throw new ApiError("No product to display");
+  }
+  
+	res.json(200, products, "All product fetched");
+});
+
+
+export {
+  uploadProductImage,
+  addProduct,
+  deleteProduct,
+  getAllProduct
+};
