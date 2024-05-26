@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middleware/multer.middleware.js";
-import { addProduct, deleteProduct, uploadProductImage } from "../controller/product.controller.js";
+import { addProduct, deleteProduct, getAllProduct, uploadProductImage } from "../controller/product.controller.js";
 
 const router = Router();
 
@@ -14,6 +14,6 @@ router.route("/addproduct").post(addProduct)
 router.route('/removeproduct').post(deleteProduct)
 
 // get all product from the database
-router.route('/allproducts').get()
+router.route('/allproducts').get(getAllProduct)
 
 export default router;
