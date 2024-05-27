@@ -40,7 +40,7 @@ const addProduct = asyncHandler(async (req, res) => {
 	await product.save();
 	console.log("New Product Saved");
 
-	res.json(new ApiResponse(200, product, "New product Added"));
+	res.status(200).json(new ApiResponse(200, product, "New product Added"));
 });
 
 const deleteProduct = asyncHandler(async (req, res) => {

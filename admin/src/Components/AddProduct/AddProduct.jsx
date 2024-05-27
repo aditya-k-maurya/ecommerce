@@ -1,28 +1,61 @@
-import React, { useState } from 'react'
-import './AddProduct.css'
-import upload_area from '../../assets/upload_area.svg'
+import React, { useState } from "react";
+import "./AddProduct.css";
+import upload_area from "../../assets/upload_area.svg";
 
 const AddProduct = () => {
+	const [image, setImage] = useState(false);
+	const [productDetails, setProductDetails] = useState({
+		name: "",
+		image: "",
+		category: "",
+		new_price: "",
+		old_price: "",
+	});
 
-  const [image, setImage] = useState(false)
-  const [productDetails, setProductDetails] = useState({
-    name: "",
-    image: "",
-    category: "",
-    new_price: "",
-    old_price:""
-  })
+	const imageHandler = (e) => {
+		setImage(e.target.files[0]);
+	};
 
-  const imageHandler = (e) => {
-    setImage(e.target.files[0])
-  }
+	const changeHandler = (e) => {
+		setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+	};
 
-  const changeHandler = (e) => {
-    setProductDetails({...productDetails,[e.target.name]:e.target.value})
-  }
+	const Add_Product = async () => {
+		let responseData;
+		let product = productDetails;
 
+		let formData = new FormData();
+		formData.append("product", image);
 
-  return (
+		await fetch("http://localhost:4000/api/v1/product/upload", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+			},
+			body: formData,
+		})
+			.then((resp) => resp.json())
+			.then((data) => {
+				responseData = data;
+			});
+		
+		if (responseData.success) {
+			product.image = responseData.data;
+			await fetch("http://localhost:4000/api/v1/product/addproduct", {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(product),
+			}).then((response) => { return response.json()})
+				.then((data) => {
+				data.success?alert("Product Added"):alert("Failed")
+			})
+		}
+	};
+
+	return (
 		<div className="add-product">
 			<div className="addproduct-itemfield">
 				<p>Product title</p>
@@ -87,9 +120,15 @@ const AddProduct = () => {
 					hidden
 				/>
 			</div>
-			<button className="addproduct-btn">ADD</button>
+			<button
+				onClick={() => {
+					Add_Product();
+				}}
+				className="addproduct-btn">
+				ADD
+			</button>
 		</div>
 	);
-}
+};
 
-export default AddProduct
+export default AddProduct;
