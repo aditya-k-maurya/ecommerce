@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import './ListProduct.css'
-import cross_icon from '../../assets/cross_icon.png'
+import "./ListProduct.css";
+import cross_icon from "../../assets/cross_icon.png";
 
 const ListProduct = () => {
 	const [allproducts, setAllProducts] = useState([]);
@@ -8,17 +8,15 @@ const ListProduct = () => {
 	const fetchInfo = async () => {
 		await fetch("http://localhost:4000/api/v1/product/allproducts")
 			.then((res) => res.json())
-      .then((data) => {
-        // console.log(data)
+			.then((data) => {
+				// console.log(data)
 				setAllProducts(data.data);
-      });
-    
-  };
-  
-  useEffect(() => {
-    fetchInfo();
-  }, [])
-  
+			});
+	};
+
+	useEffect(() => {
+		fetchInfo();
+	}, []);
 
 	const remove_product = async (id) => {
 		await fetch("http://localhost:4000/api/v1/product/removeproduct", {
@@ -29,6 +27,8 @@ const ListProduct = () => {
 			},
 			body: JSON.stringify({ id: id }),
 		});
+
+		await fetchInfo();
 	};
 
 	return (
@@ -41,35 +41,37 @@ const ListProduct = () => {
 				<p>New Price</p>
 				<p>Category</p>
 				<p>Remove</p>
-      </div>
-      
-      <div className="listproduct-allproducts">
-        <hr />
-        {allproducts.map((product, index) => {
-          return (
+			</div>
+
+			<div className="listproduct-allproducts">
+				<hr />
+				{allproducts.map((product, index) => {
+					return (
 						<>
-							<div key={index} className="listproduct-format-main listproduct-format">
+							<div className="listproduct-format-main listproduct-format">
 								<img
 									src={product.image}
 									alt=""
-									className="listproduct-production"
+									className="listproduct-product-icon"
 								/>
 								<p>{product.name}</p>
 								<p>${product.old_price}</p>
 								<p>${product.new_price}</p>
-								<p>${product.category}</p>
-                <img
-                  onClick={()=>{remove_product(product.id);}}
+								<p>{product.category}</p>
+								<img
+									onClick={() => {
+										remove_product(product.id);
+									}}
 									src={cross_icon}
 									alt=""
 									className="listproduct-remove-icon"
 								/>
-              </div>
-              <hr />
+							</div>
+							<hr />
 						</>
 					);
-        })}
-      </div>
+				})}
+			</div>
 		</div>
 	);
 };

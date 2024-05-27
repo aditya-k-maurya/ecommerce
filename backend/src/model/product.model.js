@@ -19,6 +19,10 @@ const productSchema = new Schema(
 			required: true,
 		},
 		old_price: Number,
+		category: {
+			type: String,
+			required: true,
+		},
 		available: {
 			type: Boolean,
 			default: true,

@@ -7,7 +7,7 @@ const AddProduct = () => {
 	const [productDetails, setProductDetails] = useState({
 		name: "",
 		image: "",
-		category: "",
+		category: "women",
 		new_price: "",
 		old_price: "",
 	});
@@ -18,6 +18,7 @@ const AddProduct = () => {
 
 	const changeHandler = (e) => {
 		setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+		console.log(productDetails)
 	};
 
 	const Add_Product = async () => {
@@ -50,6 +51,7 @@ const AddProduct = () => {
 				body: JSON.stringify(product),
 			}).then((response) => { return response.json()})
 				.then((data) => {
+				console.log(data.data);
 				data.success?alert("Product Added"):alert("Failed")
 			})
 		}
@@ -96,8 +98,7 @@ const AddProduct = () => {
 					value={productDetails.category}
 					onChange={changeHandler}
 					name="category"
-					className="add-product-selector"
-					id="">
+					className="add-product-selector">
 					<option value="women">Women</option>
 					<option value="men">Men</option>
 					<option value="kid">Kid</option>
