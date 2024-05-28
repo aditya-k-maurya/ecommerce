@@ -49,14 +49,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
 	await Product.findOneAndDelete({ id: id });
 
 	console.log("Product removed");
-	res.json(new ApiResponse(200, name, "Product has been removed"));
+	res
+		.status(200)
+		.json(new ApiResponse(200, name, "Product has been removed"));
 });
 
 const getAllProduct = asyncHandler(async (req, res) => {
 	let products = await Product.find({});
 
 	if (!products || products.length == 0) {
-		res.json(new ApiResponse(200, "No product to display"));
+		res.json(new ApiResponse(200,[], "No product to display"));
 	}
 
 	res.json(new ApiResponse(200, products, "All product fetched"));
