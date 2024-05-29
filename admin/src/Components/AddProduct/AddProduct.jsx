@@ -18,7 +18,7 @@ const AddProduct = () => {
 
 	const changeHandler = (e) => {
 		setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
-		console.log(productDetails)
+		// console.log(productDetails)
 	};
 
 	const Add_Product = async () => {
@@ -51,7 +51,7 @@ const AddProduct = () => {
 				body: JSON.stringify(product),
 			}).then((response) => { return response.json()})
 				.then((data) => {
-				console.log(data.data);
+				// console.log(data.data);
 				data.success?alert("Product Added"):alert("Failed")
 			})
 		}
