@@ -20,9 +20,12 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use('/images',express.static("public/images"));
 
 //routes import
-import userRouter from "./routes/product.routes.js";
+import productRouter from "./routes/product.routes.js";
 
-//routes declaration
-app.use("/api/v1/product", userRouter);
+//product routes declaration
+app.use("/api/v1/product", productRouter);
+
+//user routes declaration
+app.use("/", productRouter);
 
 export { app };

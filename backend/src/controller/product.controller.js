@@ -1,7 +1,6 @@
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import jwt from "jsonwebtoken";
 import { Product } from "../model/product.model.js";
 
 const uploadProductImage = asyncHandler((req, res) => {
