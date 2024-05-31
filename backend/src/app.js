@@ -21,11 +21,12 @@ app.use('/images',express.static("public/images"));
 
 //routes import
 import productRouter from "./routes/product.routes.js";
+import userRouter from './routes/user.routes.js'
 
 //product routes declaration
 app.use("/api/v1/product", productRouter);
 
 //user routes declaration
-app.use("/", productRouter);
+app.use("/api/v1/user", userRouter);
 
 export { app };
