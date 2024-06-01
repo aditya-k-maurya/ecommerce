@@ -15,7 +15,24 @@ const LoginSignup = () => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const login = async () => {};
+	const login = async () => {
+		try {
+			const response = await axios.post(
+				"http://localhost:4000/api/v1/user/login",
+				formData
+			);
+
+			// console.log(response)
+
+			if (response.data.success) {
+				localStorage.setItem("auth-token", response.data.data);
+				window.location.replace("/");
+			}
+		} catch (error) {
+			const errors = error.response.data.message;
+			alert(errors);
+		}
+	};
 
 	const signUp = async () => {
 		try {
@@ -24,29 +41,15 @@ const LoginSignup = () => {
 				formData
 			);
 
-			return response.data;
-		} catch (error) {
-			if (error.response) {
-				// Server responded with a status other than 200 range
-				console.error("Signup failed:", error.response.data);
-				throw new Error(
-					`Error: ${error.response.status} ${error.response.statusText}, ${error.response.data.message}`
-				);
-			} else if (error.request) {
-				// Request was made but no response received
-				console.error("No response received:", error.request);
-				throw new Error("No response received from the server.");
-			} else {
-				// Something else happened
-				console.error("Error during signup:", error.message);
-				throw new Error(`Error: ${error.message}`);
+			// console.log(response.data)
+			if (response.data.success) {
+				localStorage.setItem("auth-token", response.data.data);
+				window.location.replace("/");
 			}
+		} catch (error) {
+			const errors = error.response.data.message
+			alert(errors)
 		}
-
-		// if (responseData.success) {
-		// 	localStorage.setItem('auth-token',responseData.token)
-		// 	window.location.replace("/")
-		// }
 	};
 
 	return (
