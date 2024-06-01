@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./CSS/LoginSignup.css";
+import axios from "axios";
 
 const LoginSignup = () => {
 	const [state, setState] = useState("Login");
 
 	const [formData, setFormData] = useState({
-		username: "",
+		name: "",
 		password: "",
 		email: "",
 	});
@@ -17,18 +18,31 @@ const LoginSignup = () => {
 	const login = async () => {};
 
 	const signUp = async () => {
-		let responseData;
-		await fetch("http://localhost:4000/api/v1/user/signup", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(formData),
-		})
-			.then((response) => console.log(response))
-			// .then((data) => (console.log(data)));
-		
+		try {
+			const response = await axios.post(
+				"http://localhost:4000/api/v1/user/signup",
+				formData
+			);
+
+			return response.data;
+		} catch (error) {
+			if (error.response) {
+				// Server responded with a status other than 200 range
+				console.error("Signup failed:", error.response.data);
+				throw new Error(
+					`Error: ${error.response.status} ${error.response.statusText}, ${error.response.data.message}`
+				);
+			} else if (error.request) {
+				// Request was made but no response received
+				console.error("No response received:", error.request);
+				throw new Error("No response received from the server.");
+			} else {
+				// Something else happened
+				console.error("Error during signup:", error.message);
+				throw new Error(`Error: ${error.message}`);
+			}
+		}
+
 		// if (responseData.success) {
 		// 	localStorage.setItem('auth-token',responseData.token)
 		// 	window.location.replace("/")
@@ -42,9 +56,9 @@ const LoginSignup = () => {
 				<div className="loginsignup-fields">
 					{state === "Sign Up" ? (
 						<input
-							name="username"
+							name="name"
 							type="text"
-							value={formData.username}
+							value={formData.name}
 							onChange={changeHandler}
 							placeholder="Your Name"
 						/>
