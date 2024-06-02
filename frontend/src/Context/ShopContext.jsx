@@ -5,7 +5,7 @@ export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
 	let cart = {};
-	for (let index = 0; index < 300+1; index++) {
+	for (let index = 0; index < 300 + 1; index++) {
 		cart[index] = 0;
 	}
 	return cart;
@@ -16,8 +16,8 @@ const ShopContextProvider = (props) => {
 	const [all_product, setAll_Product] = useState([]);
 
 	useEffect(() => {
-		fetchProducts()
-	},[])
+		fetchProducts();
+	}, []);
 
 	const fetchProducts = async () => {
 		try {
@@ -30,38 +30,62 @@ const ShopContextProvider = (props) => {
 		}
 	};
 
-	const addToCart = (itemId) => {
+	const addToCart = async (itemId) => {
 		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+		if (localStorage.getItem("auth-token")) {
+			try {
+				const response = await axios.post(
+					"http://localhost:4000/api/v1/user/addtocart",
+					{ itemId },
+					{
+						headers: {
+							"auth-token": `${localStorage.getItem("auth-token")}`,
+						},
+					}
+				);
+
+				console.log(response);
+			} catch (error) {
+				console.error("Error in adding to cart :", error);
+			}
+		}
 	};
 
 	const removeFromCart = (itemId) => {
 		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-  };
-  
-  const getTotalCartAmount = () => {
-    let totalAmount = 0;
-    for (const item in cartItems) {
+	};
 
-      if (cartItems[item] > 0) {
-        let itemInfo = all_product.find((product)=> product.id===Number(item))
+	const getTotalCartAmount = () => {
+		let totalAmount = 0;
+		for (const item in cartItems) {
+			if (cartItems[item] > 0) {
+				let itemInfo = all_product.find(
+					(product) => product.id === Number(item)
+				);
 				totalAmount += itemInfo.new_price * cartItems[item];
-      }
+			}
 		}
-      return totalAmount;
-		
-  }
+		return totalAmount;
+	};
 
-	const getTotalCartItems = ()=>{
+	const getTotalCartItems = () => {
 		let totalItem = 0;
 		for (const item in cartItems) {
 			if (cartItems[item] > 0) {
-				totalItem += cartItems[item]
+				totalItem += cartItems[item];
 			}
 		}
 		return totalItem;
-	}
+	};
 
-	const contextValue = {getTotalCartItems,getTotalCartAmount, all_product, cartItems, addToCart, removeFromCart };
+	const contextValue = {
+		getTotalCartItems,
+		getTotalCartAmount,
+		all_product,
+		cartItems,
+		addToCart,
+		removeFromCart,
+	};
 
 	return (
 		<ShopContext.Provider value={contextValue}>
