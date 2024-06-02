@@ -1,11 +1,11 @@
-import React, { createContext, useState } from "react";
-import all_product from "../Components/Assets/all_product";
+import React, { createContext, useEffect, useState } from "react";
+import axios from "axios";
 
 export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
 	let cart = {};
-	for (let index = 0; index < all_product.length; index++) {
+	for (let index = 0; index < 300+1; index++) {
 		cart[index] = 0;
 	}
 	return cart;
@@ -13,6 +13,22 @@ const getDefaultCart = () => {
 
 const ShopContextProvider = (props) => {
 	const [cartItems, setCartItems] = useState(getDefaultCart());
+	const [all_product, setAll_Product] = useState([]);
+
+	useEffect(() => {
+		fetchProducts()
+	},[])
+
+	const fetchProducts = async () => {
+		try {
+			const response = await axios.get(
+				"http://localhost:4000/api/v1/product/allproducts"
+			);
+			setAll_Product(response.data.data); // Set the response data to the state
+		} catch (error) {
+			console.error("Error fetching products:", error);
+		}
+	};
 
 	const addToCart = (itemId) => {
 		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));

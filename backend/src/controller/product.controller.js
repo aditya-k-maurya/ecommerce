@@ -63,4 +63,13 @@ const getAllProduct = asyncHandler(async (req, res) => {
 	res.json(new ApiResponse(200, products, "All product fetched"));
 });
 
-export { uploadProductImage, addProduct, deleteProduct, getAllProduct };
+const newCollection = asyncHandler(async (req, res) => {
+	let product = await Product.find({});
+
+	let newCollection = product.slice(1).slice(-8);
+	res
+		.status(200)
+	.json(new ApiResponse(200, newCollection, "New collection fetched"))
+})
+
+export { uploadProductImage, addProduct, deleteProduct, getAllProduct, newCollection };
