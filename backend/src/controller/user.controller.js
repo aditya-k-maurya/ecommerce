@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Users } from "../model/user.model.js";
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
+import mongoose from "mongoose";
 
 const signUp = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body;
@@ -88,4 +89,19 @@ const login = asyncHandler(async (req, res) => {
 
 });
 
-export { signUp, login };
+const addToCart = asyncHandler(async (req, res) => {
+	const { user, itemId } = req.body
+
+	const userId =new mongoose.Types.ObjectId(user);
+	let userData = await Users.findOne({ _id: userId });
+	// console.log(userData)
+	userData.cartData[itemId] += 1;
+	await Users.findOneAndUpdate({ _id: userId }, { cartData: userData.cartData })
+	res.send("Item Added")
+})
+
+const removeFromCart = asyncHandler(async (req, res) => {
+	console.log("hellow")
+})
+
+export { signUp, login , addToCart, removeFromCart};
