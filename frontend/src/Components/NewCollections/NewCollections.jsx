@@ -17,7 +17,6 @@ const NewCollections = () => {
 					"http://localhost:4000/api/v1/product/newcollection"
         );
 
-        console.log(response.data)
         setNew_collection(response.data.data)
         
 			} catch (error) {

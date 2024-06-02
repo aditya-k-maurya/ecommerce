@@ -65,11 +65,25 @@ const getAllProduct = asyncHandler(async (req, res) => {
 
 const newCollection = asyncHandler(async (req, res) => {
 	let product = await Product.find({});
-
+	if (!product) {
+		throw new ApiError(500, "Something went wrong in fetching the data")
+	}
 	let newCollection = product.slice(1).slice(-8);
 	res
 		.status(200)
 	.json(new ApiResponse(200, newCollection, "New collection fetched"))
 })
 
-export { uploadProductImage, addProduct, deleteProduct, getAllProduct, newCollection };
+const popularInWomen = asyncHandler(async (req, res) => {
+	let products = await Product.find({ category: "women" })
+	if (!products) {
+		throw new ApiError(500, "Something went wrong in fetching the data")
+	}
+	let popular_in_women = products.slice(0, 4)
+
+	res
+	.status(200)
+	.json(new ApiResponse(200, popular_in_women, "popular in women is fetched"))
+})
+
+export { uploadProductImage, addProduct, deleteProduct, getAllProduct, newCollection , popularInWomen};

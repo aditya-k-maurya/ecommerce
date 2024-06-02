@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { upload } from "../middleware/multer.middleware.js";
-import { addProduct, deleteProduct, getAllProduct, newCollection, uploadProductImage } from "../controller/product.controller.js";
+import { addProduct, deleteProduct, getAllProduct, newCollection, popularInWomen, uploadProductImage } from "../controller/product.controller.js";
 
 const router = Router();
 
@@ -18,5 +18,8 @@ router.route('/allproducts').get(getAllProduct)
 
 // get new collection
 router.route('/newcollection').get(newCollection)
+
+// get popular in women category
+router.route('/popularinwomen').get(popularInWomen)
 
 export default router;
