@@ -44,15 +44,14 @@ const signUp = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
 
-  const { email, password } = req.body;
+	console.log("Email:", email);
+	console.log("Password:", password);
 
-    console.log("Email:", email);
-		console.log("Password:", password);
-
-  if(!email || !password){
-    throw new ApiError(400, "email and password are required")
-  }
+	if (!email || !password) {
+		throw new ApiError(400, "email and password are required");
+	}
 
 	let user = await Users.findOne({ email });
 
@@ -60,48 +59,58 @@ const login = asyncHandler(async (req, res) => {
 		throw new ApiError(400, "Email doesn't exists");
 	}
 
-  const verifyPassword = await bcryptjs.compare(password, user.password);
-  
-  if (!verifyPassword) {
-    throw new ApiError(400, "Invalid credientials")
-  }
+	const verifyPassword = await bcryptjs.compare(password, user.password);
 
-  const data = {
-    user: {
-      id: user._id
-    }
-  }
+	if (!verifyPassword) {
+		throw new ApiError(400, "Invalid credientials");
+	}
 
-  const token = jwt.sign(data, process.env.JWT_SECRET, {
-    expiresIn: "7d"
-  });
+	const data = {
+		user: {
+			id: user._id,
+		},
+	};
 
-  	const cookiesOption = {
-			httpOnly: true,
-			secure: true,
-		};
+	const token = jwt.sign(data, process.env.JWT_SECRET, {
+		expiresIn: "7d",
+	});
 
-  
-  res
+	const cookiesOption = {
+		httpOnly: true,
+		secure: true,
+	};
+
+	res
 		.status(200)
 		.cookie("token", token, cookiesOption)
 		.json(new ApiResponse(200, token, "User logged in successfully"));
-
 });
 
 const addToCart = asyncHandler(async (req, res) => {
-	const { user, itemId } = req.body
+	const { user, itemId } = req.body;
 
-	const userId =new mongoose.Types.ObjectId(user);
+	const userId = new mongoose.Types.ObjectId(user);
 	let userData = await Users.findOne({ _id: userId });
 	// console.log(userData)
 	userData.cartData[itemId] += 1;
-	await Users.findOneAndUpdate({ _id: userId }, { cartData: userData.cartData })
-	res.send("Item Added")
-})
+	await Users.findOneAndUpdate(
+		{ _id: userId },
+		{ cartData: userData.cartData }
+	);
+	res.send("Item Added Successfully");
+});
 
 const removeFromCart = asyncHandler(async (req, res) => {
-	console.log("hellow")
-})
+	const { user, itemId } = req.body;
+	const userId = new mongoose.Types.ObjectId(user);
+	let userData = await Users.findOne({ _id: userId });
+	if (userData.cartData[itemId] > 0) userData.cartData[itemId] -= 1;
 
-export { signUp, login , addToCart, removeFromCart};
+	await Users.findOneAndUpdate(
+		{ _id: userId },
+		{ cartData: userData.cartData }
+	);
+	res.send("Item Removed Successfully");
+});
+
+export { signUp, login, addToCart, removeFromCart };

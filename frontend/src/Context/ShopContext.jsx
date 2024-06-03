@@ -44,15 +44,32 @@ const ShopContextProvider = (props) => {
 					}
 				);
 
-				console.log(response);
+				// console.log(response);
 			} catch (error) {
 				console.error("Error in adding to cart :", error);
 			}
 		}
 	};
 
-	const removeFromCart = (itemId) => {
+	const removeFromCart =async (itemId) => {
 		setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+		if (localStorage.getItem("auth-token")) {
+			try {
+				const response = await axios.post(
+					"http://localhost:4000/api/v1/user/removefromcart",
+					{ itemId },
+					{
+						headers: {
+							"auth-token": `${localStorage.getItem("auth-token")}`,
+						},
+					}
+				);
+
+				console.log(response);
+			} catch (error) {
+				console.error("Error in adding to cart :", error);
+			}
+		}
 	};
 
 	const getTotalCartAmount = () => {

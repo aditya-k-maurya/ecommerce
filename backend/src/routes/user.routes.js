@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signUp,login, addToCart } from "../controller/user.controller.js";
+import { signUp,login, addToCart, removeFromCart } from "../controller/user.controller.js";
 import fetchUser from "../middleware/fetchUser.middleware.js";
 
 const router = Router();
@@ -11,7 +11,10 @@ router.route('/signup').post(signUp)
 router.route('/login').post(login)
 
 //add to cart item
-router.route('/addtocart').post(fetchUser ,addToCart)
+router.route('/addtocart').post(fetchUser, addToCart)
+
+// remove from cart
+router.route('/removefromcart').post(fetchUser, removeFromCart)
 
 
 export default router
