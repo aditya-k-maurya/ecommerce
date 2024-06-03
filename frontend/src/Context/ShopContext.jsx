@@ -14,10 +14,12 @@ const getDefaultCart = () => {
 const ShopContextProvider = (props) => {
 	const [cartItems, setCartItems] = useState(getDefaultCart());
 	const [all_product, setAll_Product] = useState([]);
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		fetchProducts();
 		fetchCartItem();
+		setIsLoading(false)
 	}, []);
 
 	const fetchCartItem = async () => {
@@ -127,6 +129,7 @@ const ShopContextProvider = (props) => {
 		getTotalCartAmount,
 		all_product,
 		cartItems,
+		isLoading,
 		addToCart,
 		removeFromCart,
 	};
