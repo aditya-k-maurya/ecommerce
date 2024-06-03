@@ -113,4 +113,19 @@ const removeFromCart = asyncHandler(async (req, res) => {
 	res.send("Item Removed Successfully");
 });
 
-export { signUp, login, addToCart, removeFromCart };
+const getCartData = asyncHandler(async (req, res) => {
+	const { user } = req.body;
+	const userId = new mongoose.Types.ObjectId(user);
+	let userData = await Users.findOne({ _id: userId });
+	res
+		.status(200)
+		.json(
+			new ApiResponse(
+				200,
+				userData.cartData,
+				"User cart Data fetched successfully"
+			)
+		);
+});
+
+export { signUp, login, addToCart, removeFromCart, getCartData };
